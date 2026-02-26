@@ -36,3 +36,5 @@ const updateRecipeSchema = {
   },
   additionalProperties: false,
 };
+
+module.exports = { updateRecipeSchema };

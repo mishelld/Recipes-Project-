@@ -9,15 +9,15 @@ const {
   getStatsRecipes,
 } = require("../controllers/recipeController");
 const {
-  validateRecipe,
-  validateRecipeUpdate,
+  Recipevalidater,
+  RecipeUpdatevalidater,
 } = require("../middlewares/recipeValidation");
 
 router.get("/", getAllRecipes);
 router.get("/stats", getStatsRecipes);
 router.get("/:id", getRecipeById);
-router.post("/", validateRecipe, addRecipe);
-router.put("/:id", validateRecipeUpdate, updateRecipe);
+router.post("/", Recipevalidater, addRecipe);
+router.put("/:id", RecipeUpdatevalidater, updateRecipe);
 router.delete("/:id", deleteRecipe);
 
 module.exports = router;

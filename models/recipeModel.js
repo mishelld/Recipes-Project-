@@ -12,7 +12,7 @@ async function getRecipeById(id) {
 }
 
 async function addRecipe(newRecipe) {
-  newRecipe.createdAt = new Date();
+  newRecipe.createdAt = new Date().toISOString();
   newRecipe.id = uuidv4();
 
   const recipes = await getRecipes();
@@ -24,6 +24,9 @@ async function addRecipe(newRecipe) {
 async function updateRecipe(id, updatedData) {
   const recipes = await getRecipes();
   let index = recipes.findIndex((r) => r.id === id);
+  if (index === -1) {
+    return null;
+  }
   recipes[index] = { ...recipes[index], ...updatedData };
   await fs.promises.writeFile("./data/recipes.json", JSON.stringify(recipes));
   return recipes[index];
@@ -45,7 +48,11 @@ async function getStatsRecipes() {
   const recipes = await getRecipes();
   const totalRecipes = recipes.length;
   if (totalRecipes === 0) {
-    return { message: "array empty" };
+    return {
+      totalRecipes: 0,
+      avgCookingTime: 0,
+      recipesByDifficulty: { easy: 0, medium: 0, hard: 0 },
+    };
   }
   const avgCookingTime =
     recipes.reduce((sum, r) => sum + r.cookingTime, 0) / totalRecipes;

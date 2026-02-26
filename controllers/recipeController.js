@@ -9,7 +9,9 @@ async function getAllRecipes(req, res, next) {
       filtered = filtered.filter((r) => r.difficulty === difficulty);
     }
     if (maxCookingTime) {
-      filtered = filtered.filter((r) => r.cookingTime === maxCookingTime);
+      filtered = filtered.filter(
+        (r) => r.cookingTime <= Number(maxCookingTime),
+      );
     }
     if (search) {
       filtered = filtered.filter(
@@ -60,7 +62,7 @@ async function updateRecipe(req, res, next) {
       error.statusCode = 404;
       return next(error);
     }
-    res.status(201).json(newRecipe);
+    res.status(200).json(newRecipe);
   } catch (error) {
     next(error);
   }
@@ -80,7 +82,7 @@ async function deleteRecipe(req, res, next) {
     next(error);
   }
 }
-async function getStatsRecipes(req, res) {
+async function getStatsRecipes(req, res, next) {
   try {
     const stats = await recipesModel.getStatsRecipes();
     res.status(200).json(stats);
