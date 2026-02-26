@@ -1,12 +1,53 @@
-[{
-  "id": "unique-id",
-  "title": "Recipe Title",
-  "description": "Brief description",
-  "ingredients": ["ingredient 1", "ingredient 2"],
-  "instructions": ["step 1", "step 2"],
-  "cookingTime": 30, 
-  "servings": 4,
-  "difficulty": "easy", 
-  "rating": 4.5,
-  "createdAt": "2025-01-01T00:00:00.000Z"
-}]
+[
+  {
+    "id": "1a2b3c",
+    "title": "Spaghetti Bolognese",
+    "description": "Classic Italian pasta with rich meat sauce.",
+    "ingredients": ["spaghetti", "ground beef", "tomato sauce", "onion", "garlic"],
+    "instructions": [
+      "Boil spaghetti until al dente",
+      "Cook ground beef with onions and garlic",
+      "Add tomato sauce and simmer",
+      "Serve sauce over spaghetti"
+    ],
+    "cookingTime": 45,
+    "servings": 4,
+    "difficulty": "medium",
+    "rating": 4.7,
+    "createdAt": "2026-02-26T12:00:00.000Z"
+  },
+  {
+    "id": "2d4e6f",
+    "title": "Easy Pancakes",
+    "description": "Fluffy pancakes perfect for breakfast.",
+    "ingredients": ["flour", "milk", "egg", "baking powder", "sugar"],
+    "instructions": [
+      "Mix flour, baking powder, and sugar",
+      "Add milk and egg, stir until smooth",
+      "Pour batter onto hot pan and cook until golden",
+      "Serve with syrup"
+    ],
+    "cookingTime": 20,
+    "servings": 2,
+    "difficulty": "easy",
+    "rating": 4.5,
+    "createdAt": "2026-02-26T12:30:00.000Z"
+  },
+  {
+    "id": "3g5h7i",
+    "title": "Chicken Curry",
+    "description": "Spicy and savory chicken curry with coconut milk.",
+    "ingredients": ["chicken", "curry powder", "coconut milk", "onion", "garlic", "ginger"],
+    "instructions": [
+      "Sauté onion, garlic, and ginger",
+      "Add chicken and brown",
+      "Stir in curry powder and coconut milk",
+      "Simmer until chicken is cooked"
+    ],
+    "cookingTime": 60,
+    "servings": 4,
+    "difficulty": "hard",
+    "rating": 4.8,
+    "createdAt": "2026-02-26T13:00:00.000Z"
+  }
+]
