@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
 const recipesRouter = require("./routes/recipesRoutes");
+const morgan = require("morgan");
+app.use(morgan("dev"));
+
 app.use(express.json());
+
 app.use("/api/recipes", recipesRouter);
 
-// Error Handling Middleware (always in the END)
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
 
