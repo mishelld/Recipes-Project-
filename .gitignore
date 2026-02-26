@@ -1,0 +1,22 @@
+# Node dependencies
+node_modules/
+
+# Optional: package files if you don’t want them
+package-lock.json
+package.json
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Optional build folders
+dist/
+coverage/
