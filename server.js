@@ -6,9 +6,12 @@ app.use("/api/recipes", recipesRouter);
 
 // Error Handling Middleware (always in the END)
 app.use((err, req, res, next) => {
-  res.status(err.status || 500).json({
-    success: false,
+  const statusCode = err.statusCode || 500;
+
+  res.status(statusCode).json({
+    error: true,
     message: err.message || "Server Error",
+    statusCode: statusCode,
   });
 });
 const PORT = 3000;

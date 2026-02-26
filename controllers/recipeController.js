@@ -1,6 +1,6 @@
 const recipesModel = require("../models/recipeModel");
 
-async function getAllRecipes(req, res) {
+async function getAllRecipes(req, res, next) {
   try {
     const recipes = await recipesModel.getRecipes();
     const { difficulty, maxCookingTime, search } = req.query;
@@ -20,44 +20,64 @@ async function getAllRecipes(req, res) {
     }
     res.status(200).json(filtered);
   } catch (error) {
-    throw { ...error, status: error.status || 500 };
+    error.statusCode = error.statusCode || 500;
+    next(error);
   }
 }
 
-async function getRecipeById(req, res) {
-  const recipeId = req.params.id;
-  const recipe = await recipesModel.getRecipeById(recipeId);
-  if (!recipe) {
-    throw { ...new Error("recipe not found"), status: 404 };
+async function getRecipeById(req, res, next) {
+  try {
+    const recipeId = req.params.id;
+    const recipe = await recipesModel.getRecipeById(recipeId);
+    if (!recipe) {
+      const error = new Error("Recipe not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+    res.status(200).json(recipe);
+  } catch (error) {
+    next(error);
   }
-  res.status(200).json(recipe);
 }
 
-async function addRecipe(req, res) {
-  const newRecipeDraft = req.body;
-  const newRecipe = await recipesModel.addRecipe(newRecipeDraft);
-  res.status(201).json(newRecipe);
+async function addRecipe(req, res, next) {
+  try {
+    const newRecipeDraft = req.body;
+    const newRecipe = await recipesModel.addRecipe(newRecipeDraft);
+    res.status(201).json(newRecipe);
+  } catch (error) {
+    next(error);
+  }
 }
 
-async function updateRecipe(req, res) {
-  const id = req.params.id;
-  const RecipeDraft = req.body;
-  const newRecipe = await recipesModel.updateRecipe(id, RecipeDraft);
-  res.status(201).json(newRecipe);
+async function updateRecipe(req, res, next) {
+  try {
+    const id = req.params.id;
+    const RecipeDraft = req.body;
+    const newRecipe = await recipesModel.updateRecipe(id, RecipeDraft);
+    if (!newRecipe) {
+      const error = new Error("Recipe not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+    res.status(201).json(newRecipe);
+  } catch (error) {
+    next(error);
+  }
 }
 
-async function deleteRecipe(req, res) {
+async function deleteRecipe(req, res, next) {
   try {
     const id = req.params.id;
     const deleted = await recipesModel.deleteRecipe(id);
     if (!deleted) {
-      throw { ...new Error("failed to delete recipe"), status: 404 };
+      const error = new Error("failed to delete recipe");
+      error.statusCode = 404;
+      return next(error);
     }
     res.status(204).send();
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Server Error", error: error.message });
+    next(error);
   }
 }
 async function getStatsRecipes(req, res) {
@@ -65,9 +85,7 @@ async function getStatsRecipes(req, res) {
     const stats = await recipesModel.getStatsRecipes();
     res.status(200).json(stats);
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Server Error", error: error.message });
+    next(error);
   }
 }
 module.exports = {
