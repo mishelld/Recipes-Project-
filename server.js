@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const recipesRouter = require("./routes/recipesRoutes");
+const { sequelize } = require("./db/models/index.js");
+
 const morgan = require("morgan");
 app.use(morgan("dev"));
 
@@ -17,7 +19,17 @@ app.use((err, req, res, next) => {
     statusCode: statusCode,
   });
 });
+
+async function dbConnect() {
+  try {
+    await sequelize.authenticate();
+    console.log("✅ Database connection established successfully.");
+  } catch (error) {
+    console.error("❌ Unable to connect to database:", error);
+  }
+}
 const PORT = 3000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log("Server is listening on port " + PORT);
+  await dbConnect();
 });
