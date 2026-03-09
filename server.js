@@ -1,6 +1,9 @@
 const express = require("express");
+require("dotenv").config();
 const app = express();
 const recipesRouter = require("./routes/recipesRoutes");
+const authRouter = require("./routes/authRoutes");
+
 const { sequelize } = require("./db/models/index.js");
 
 const morgan = require("morgan");
@@ -9,6 +12,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/api/recipes", recipesRouter);
+app.use("/api/auth", authRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
