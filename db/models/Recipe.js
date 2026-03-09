@@ -57,4 +57,12 @@ const Recipe = sequelize.define(
   },
 );
 
+Recipe.associate = (models) => {
+  Recipe.belongsToMany(models.User, {
+    through: "UserFavorites",
+    as: "favoritedBy",
+    foreignKey: "recipeId",
+  });
+};
+
 module.exports = Recipe;

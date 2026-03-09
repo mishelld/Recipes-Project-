@@ -2,6 +2,7 @@ const express = require("express");
 require("dotenv").config();
 const app = express();
 const recipesRouter = require("./routes/recipesRoutes");
+const favoritesRoutes = require("./routes/favoritesRoutes");
 const authRouter = require("./routes/authRoutes");
 
 const { sequelize } = require("./db/models/index.js");
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use("/api/recipes", recipesRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/users", favoritesRoutes);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
