@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const { sequelize } = require("../db/models");
+const { Recipe } = require("../models");
 
 async function getRecipes() {
   const [results, metadata] = await sequelize.query(`SELECT * FROM "Recipes";`);
@@ -127,6 +128,15 @@ async function getStatsRecipes() {
   };
 }
 
+async function getRecipesByUser(userId) {
+  const recipes = await Recipe.findAll({
+    where: { userId },
+    order: [["createdAt", "DESC"]],
+  });
+
+  return recipes.map((r) => r.toJSON());
+}
+
 module.exports = {
   getRecipes,
   getRecipeById,
@@ -134,4 +144,5 @@ module.exports = {
   updateRecipe,
   deleteRecipe,
   getStatsRecipes,
+  getRecipesByUser,
 };

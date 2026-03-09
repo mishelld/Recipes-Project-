@@ -90,6 +90,22 @@ async function getStatsRecipes(req, res, next) {
     next(error);
   }
 }
+
+async function getMyRecipes(req, res, next) {
+  try {
+    const userId = req.user.id;
+    const recipes = await recipeService.getRecipesByUser(userId);
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "My recipes retrieved successfully",
+      recipes,
+    });
+  } catch (err) {
+    next({ status: 500, message: err.message });
+  }
+}
 module.exports = {
   getAllRecipes,
   getRecipeById,
@@ -97,4 +113,5 @@ module.exports = {
   updateRecipe,
   deleteRecipe,
   getStatsRecipes,
+  getMyRecipes,
 };
