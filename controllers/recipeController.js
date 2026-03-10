@@ -94,7 +94,7 @@ async function getStatsRecipes(req, res, next) {
 async function getMyRecipes(req, res, next) {
   try {
     const userId = req.user.id;
-    const recipes = await recipeService.getRecipesByUser(userId);
+    const recipes = await recipesModel.getRecipesByUser(userId);
 
     res.status(200).json({
       success: true,
