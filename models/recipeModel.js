@@ -5,13 +5,8 @@ const { Recipe } = require("../db/models");
 
 async function getRecipes() {
   const [results, metadata] = await sequelize.query(`SELECT * FROM "Recipes";`);
+  console.log(results);
   return results;
-}
-
-async function getRecipeById(id) {
-  const recipes = await getRecipes();
-  const recipe = recipes.find((r) => r.id === id);
-  return recipe;
 }
 
 async function getRecipeById(id) {
@@ -23,65 +18,21 @@ async function getRecipeById(id) {
 }
 
 async function addRecipe(newRecipe) {
-  const query = `
-    INSERT INTO "Recipes" 
-      (title, description, ingredients, instructions, cookingTime, servings, difficulty, imageUrl, isPublic, "userId")
-    VALUES 
-      (:title, :description, :ingredients, :instructions, :cookingTime, :servings, :difficulty, :imageUrl, :isPublic, :userId)
-    RETURNING *;
-  `;
-
-  const replacements = {
-    title: newRecipe.title,
-    description: newRecipe.description,
-    ingredients: JSON.stringify(newRecipe.ingredients),
-    instructions: JSON.stringify(newRecipe.instructions),
-    cookingTime: newRecipe.cookingTime,
-    servings: newRecipe.servings,
-    difficulty: newRecipe.difficulty,
+  const createdRecipe = await Recipe.create({
+    ...newRecipe,
     imageUrl: newRecipe.imageUrl || null,
     isPublic: newRecipe.isPublic ?? true,
-    userId: newRecipe.userId,
-  };
-
-  const [results] = await sequelize.query(query, { replacements });
-  return results[0];
+  });
+  return createdRecipe;
 }
-
 async function updateRecipe(id, updatedData) {
-  const query = `
-    UPDATE "Recipes"
-    SET title = :title,
-        description = :description,
-        ingredients = :ingredients,
-        instructions = :instructions,
-        "cookingTime" = :cookingTime,
-        servings = :servings,
-        difficulty = :difficulty,
-        "imageUrl" = :imageUrl,
-        "isPublic" = :isPublic,
-        "userId" = :userId,
-        "updatedAt" = NOW()
-    WHERE id = :id
-    RETURNING *;
-  `;
+  const { id: _, userId: __, createdAt: ___, ...data } = updatedData;
+  const [rowsUpdated, [updatedRecipe]] = await Recipe.update(data, {
+    where: { id },
+    returning: true,
+  });
 
-  const replacements = {
-    id,
-    title: updatedData.title,
-    description: updatedData.description,
-    ingredients: JSON.stringify(updatedData.ingredients),
-    instructions: JSON.stringify(updatedData.instructions),
-    cookingTime: updatedData.cookingTime,
-    servings: updatedData.servings,
-    difficulty: updatedData.difficulty,
-    imageUrl: updatedData.imageUrl || null,
-    isPublic: updatedData.isPublic ?? true,
-    userId: updatedData.userId,
-  };
-
-  const [results] = await sequelize.query(query, { replacements });
-  return results[0] || null;
+  return rowsUpdated ? updatedRecipe : null;
 }
 
 async function deleteRecipe(id) {

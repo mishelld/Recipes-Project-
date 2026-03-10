@@ -33,6 +33,12 @@ const updateRecipeSchema = {
       type: "string",
       enum: ["easy", "medium", "hard"],
     },
+    imageUrl: {
+      type: "string",
+    },
+    isPublic: {
+      type: "boolean",
+    },
   },
   additionalProperties: false,
 };
