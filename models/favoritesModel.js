@@ -1,4 +1,4 @@
-const { User, Recipe } = require("../models");
+const { User, Recipe } = require("../db/models");
 
 async function addFavorite(userId, recipeId) {
   const user = await User.findByPk(userId);

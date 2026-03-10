@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const { sequelize } = require("../db/models");
-const { Recipe } = require("../models");
+const { Recipe } = require("../db/models");
 
 async function getRecipes() {
   const [results, metadata] = await sequelize.query(`SELECT * FROM "Recipes";`);

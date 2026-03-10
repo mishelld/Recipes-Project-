@@ -1,4 +1,4 @@
-const favoritesModel = require("../services/favoritesModel");
+const favoritesModel = require("../models/favoritesModel");
 
 async function addFavorite(req, res, next) {
   try {
