@@ -39,7 +39,6 @@ const recipeSchema = {
     isPublic: {
       type: "boolean",
     },
-    userId: { type: "string", format: "uuid" },
   },
   required: [
     "title",
@@ -49,7 +48,6 @@ const recipeSchema = {
     "cookingTime",
     "servings",
     "difficulty",
-    "userId",
   ],
   additionalProperties: false,
 };

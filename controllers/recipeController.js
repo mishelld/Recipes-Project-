@@ -45,7 +45,13 @@ async function getRecipeById(req, res, next) {
 async function addRecipe(req, res, next) {
   try {
     const newRecipeDraft = req.body;
-    const newRecipe = await recipesModel.addRecipe(newRecipeDraft);
+    const userId = req.user.id;
+    const filePath = req.file ? req.file.path : null;
+    const newRecipe = await recipesModel.addRecipe(
+      newRecipeDraft,
+      userId,
+      filePath,
+    );
     res.status(201).json(newRecipe);
   } catch (error) {
     next(error);

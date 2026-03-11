@@ -2,7 +2,13 @@ const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const { sequelize } = require("../db/models");
 const { Recipe } = require("../db/models");
+const cloudinary = require("cloudinary").v2;
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 async function getRecipes() {
   const [results, metadata] = await sequelize.query(`SELECT * FROM "Recipes";`);
   console.log(results);
@@ -17,10 +23,21 @@ async function getRecipeById(id) {
   return results[0] || null;
 }
 
-async function addRecipe(newRecipe) {
+async function addRecipe(newRecipe, userId, filePath) {
+  let cloudinaryURL = null;
+  if (filePath) {
+    try {
+      const uploadResult = await cloudinary.uploader.upload(filePath);
+      cloudinaryURL = uploadResult.url;
+    } finally {
+      fs.promises.unlink(filePath);
+    }
+  }
+
   const createdRecipe = await Recipe.create({
     ...newRecipe,
-    imageUrl: newRecipe.imageUrl || null,
+    userId,
+    imageUrl: cloudinaryURL,
     isPublic: newRecipe.isPublic ?? true,
   });
   return createdRecipe;

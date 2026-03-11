@@ -9,7 +9,15 @@ const validateRecipe = ajv.compile(recipeSchema);
 const validateRecipeUpdate = ajv.compile(updateRecipeSchema);
 
 function Recipevalidater(req, res, next) {
-  const recipe = req.body;
+  let recipe;
+  try {
+    recipe = req.body.data ? JSON.parse(req.body.data) : req.body;
+  } catch (e) {
+    const error = new Error("Invalid JSON in data field");
+    error.statusCode = 400;
+    return next(error);
+  }
+  req.body = recipe;
   const valid = validateRecipe(recipe);
   if (valid) {
     next();

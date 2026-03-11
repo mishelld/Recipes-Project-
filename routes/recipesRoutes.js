@@ -1,7 +1,8 @@
 const express = require("express");
 const { authenticate } = require("../middlewares/authenticate");
-
 const router = express.Router();
+const multer = require("multer");
+const upload = multer({ dest: "public/" });
 const {
   getAllRecipes,
   getRecipeById,
@@ -21,7 +22,13 @@ router.get("/", getAllRecipes);
 router.get("/stats", getStatsRecipes);
 router.get("/my-recipes", authenticate, getMyRecipes);
 router.get("/:id", getRecipeById);
-router.post("/", authenticate, Recipevalidater, addRecipe);
+router.post(
+  "/",
+  authenticate,
+  upload.single("image"),
+  Recipevalidater,
+  addRecipe,
+);
 router.put(
   "/:id",
   authenticate,
