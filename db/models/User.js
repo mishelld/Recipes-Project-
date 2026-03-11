@@ -20,10 +20,10 @@ module.exports = (sequelize) => {
       timestamps: true,
     },
   );
+
   User.associate = (models) => {
-    // Many-to-Many with Recipe
     User.belongsToMany(models.Recipe, {
-      through: "UserFavorites",
+      through: models.UserFavorite,
       as: "favorites",
       foreignKey: "userId",
     });

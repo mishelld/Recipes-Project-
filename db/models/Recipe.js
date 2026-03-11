@@ -59,7 +59,7 @@ module.exports = (sequelize) => {
 
   Recipe.associate = (models) => {
     Recipe.belongsToMany(models.User, {
-      through: "UserFavorites",
+      through: models.UserFavorite,
       as: "favoritedBy",
       foreignKey: "recipeId",
     });

@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use("/api/recipes", recipesRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/users", favoritesRoutes);
+app.use("/api/users/favorites", favoritesRoutes);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
