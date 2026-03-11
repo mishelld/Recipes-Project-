@@ -17,6 +17,7 @@ const {
   RecipeUpdatevalidater,
 } = require("../middlewares/recipeValidation");
 const { checkRecipeOwnership } = require("../middlewares/checkRecipeOwnership");
+const uploadMiddleware = require("../middlewares/upload");
 
 router.get("/", getAllRecipes);
 router.get("/stats", getStatsRecipes);
