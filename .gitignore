@@ -2,8 +2,6 @@
 node_modules/
 
 # Optional: package files if you don’t want them
-package-lock.json
-package.json
 
 # Environment variables
 .env
